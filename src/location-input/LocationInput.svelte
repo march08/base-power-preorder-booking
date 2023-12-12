@@ -33,6 +33,8 @@
   let zipCodes: SheetZips;
   $: zipCodes = {};
 
+  $: inputErrorMessage = "";
+
   let hsAvailableFormEl: HTMLFormElement;
   $: hsAvailableFormEl = undefined;
   let hsNotAvailableFormEl: HTMLFormElement;
@@ -90,41 +92,54 @@
   });
 </script>
 
-<GooglePlaceAutocomplete
-  class="location-search-input"
-  apiKey={googleSheetConfig.googlePublicApiKey}
-  onSelect={(value) => {
-    const parsed = parsePlaceResult(value);
-    const lookupCode = `${parsed.stateShort}::${parsed.postalCode}`;
+<div>
+  <GooglePlaceAutocomplete
+    class="location-search-input"
+    apiKey={googleSheetConfig.googlePublicApiKey}
+    onSelect={(value) => {
+      const parsed = parsePlaceResult(value);
 
-    const targetDisplayAddressEl =
-      document.querySelectorAll(targetDisplayAddress);
+      if (!parsed.postalCode) {
+        inputErrorMessage = "Please select an address with ZIP code.";
+        return;
+      }
 
-    targetDisplayAddressEl.forEach((el) => {
-      el.innerHTML = parsed.formattedAddress;
-    });
+      const lookupCode = `${parsed.stateShort}::${parsed.postalCode}`;
 
-    // make panel visible
-    panelElement.style.transform = "translateX(0)";
-    addressPanel.style.display = "none";
+      const targetDisplayAddressEl =
+        document.querySelectorAll(targetDisplayAddress);
 
-    if (zipCodes[lookupCode]) {
-      document.querySelectorAll(targetAvailableText).forEach((el) => {
-        el.innerHTML = zipCodes[lookupCode];
+      targetDisplayAddressEl.forEach((el) => {
+        el.innerHTML = parsed.formattedAddress;
       });
-      targetAvailableStateEl.style.display = "block";
-      targetNotAvailableStateEl.style.display = "none";
-      setHiddenHubspotInputs(hsAvailableFormEl, parsed);
-    } else {
-      targetAvailableStateEl.style.display = "none";
-      targetNotAvailableStateEl.style.display = "block";
-      setHiddenHubspotInputs(hsNotAvailableFormEl, parsed);
-    }
-  }}
-  options={{
-    componentRestrictions: { country: "us" },
-  }}
-/>
+
+      // make panel visible
+      panelElement.style.transform = "translateX(0)";
+      addressPanel.style.display = "none";
+
+      if (zipCodes[lookupCode]) {
+        document.querySelectorAll(targetAvailableText).forEach((el) => {
+          el.innerHTML = zipCodes[lookupCode];
+        });
+        targetAvailableStateEl.style.display = "block";
+        targetNotAvailableStateEl.style.display = "none";
+        setHiddenHubspotInputs(hsAvailableFormEl, parsed);
+      } else {
+        targetAvailableStateEl.style.display = "none";
+        targetNotAvailableStateEl.style.display = "block";
+        setHiddenHubspotInputs(hsNotAvailableFormEl, parsed);
+      }
+    }}
+    options={{
+      componentRestrictions: { country: "us" },
+    }}
+  />
+  {#if inputErrorMessage}
+    <p class="preorder-address-error-message">
+      {inputErrorMessage}
+    </p>
+  {/if}
+</div>
 
 <svelte:head>
   <script
@@ -135,6 +150,11 @@
 </svelte:head>
 
 <style lang="scss" global>
+  .preorder-address-error-message {
+    color: #c95151;
+    font-size: 14px;
+    margin-top: 6px;
+  }
   .location-search-input {
     border: none;
     background: rgba(250, 254, 255, 0.97);

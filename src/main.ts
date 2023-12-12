@@ -30,12 +30,12 @@ const locationInput = new LocationInput({
     },
     hsFormNewsletter: {
       target: "#newsletter-form",
-      // region: "eu1",
-      // portalId: "26542071",
-      // formId: "e9e30637-a84c-45ea-a7d1-b2a34ee40059",
-      region: "na1",
-      portalId: "43873875",
-      formId: "bdfdc2d3-1e91-44e7-a477-02a68a93d0f9",
+      region: "eu1",
+      portalId: "26542071",
+      formId: "e9e30637-a84c-45ea-a7d1-b2a34ee40059",
+      // region: "na1",
+      // portalId: "43873875",
+      // formId: "bdfdc2d3-1e91-44e7-a477-02a68a93d0f9",
       onFormSubmit: (r) => {
         console.log("r", r);
       },

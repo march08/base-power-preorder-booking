@@ -147,6 +147,8 @@
   .pac-container {
     border-radius: 12px;
     transform: translateY(calc(-100% - 44px));
+    display: flex;
+    flex-direction: column-reverse;
     .pac-item {
       padding: 0 16px;
       line-height: 44px;

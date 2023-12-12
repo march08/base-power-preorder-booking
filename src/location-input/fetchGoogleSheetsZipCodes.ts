@@ -24,7 +24,7 @@ const fetchSheetData = async (sheetConfig: SheetDataConfig, page = 1) => {
     .then((res) => res.json())
     .then((res) => (res as SheetResult).values);
 
-  if (values.length === PAGE_SIZE) {
+  if (values.length >= PAGE_SIZE) {
     return [...values, ...(await fetchSheetData(sheetConfig, page + 1))];
   }
 
