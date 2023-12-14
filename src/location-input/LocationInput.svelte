@@ -36,6 +36,7 @@
     placeholder="Enter your address"
     onSelect={(value) => {
       const parsed = parsePlaceResult(value);
+      window.blur();
 
       if (!parsed.postalCode) {
         inputErrorMessage = "Please select an address with ZIP code.";
@@ -101,25 +102,11 @@
     line-height: 44px;
   }
 
-  .pac-container {
-    border-radius: 12px;
-    transform: translateY(calc(-100% - 44px));
-    .pac-item {
-      padding: 0 16px;
-      line-height: 44px;
-    }
-    .pac-item-query {
-    }
-    &:after {
-      display: none !important;
-    }
-  }
-
-  .pac-icon.pac-icon-marker {
-    display: none;
-  }
-
   .hs-form__virality-link {
     display: none !important;
+  }
+
+  #popup-form {
+    transition: 0.2s all;
   }
 </style>

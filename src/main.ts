@@ -1,17 +1,16 @@
 import { PreorderApp } from "./PreorderApp";
 
 PreorderApp.initialize({
-  targetElsAddressInput: [
-    document.getElementById("address-form") as HTMLDivElement,
-    document.getElementById("hero-address-entry") as HTMLDivElement,
-  ],
+  targetElAddressInput: document.getElementById(
+    "hero-address-entry"
+  ) as HTMLDivElement,
   googlePublicApiKey: "AIzaSyB0o_nPI-xjHYKg7KB0bl87Yhnf2ng9Nsg",
   targetPanel: "#popup-form",
   targetAddressPanel: "#address-popup",
   targetAvailableState: "#preorder-base",
   targetNotAvailableState: "#not-available",
   targetStateContainer: "#popup-form .form-box_holder",
-  targetAvailableText: `[data-preorder-form="availability"]`,
+  targetAvailableText: `#preorder-availability`,
   targetDisplayAddress: `#service-address`,
 
   querySelectorClickToOpenForm: '[data-preorder="open"]',

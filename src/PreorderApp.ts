@@ -3,7 +3,6 @@ import { initializeHubspotForms } from "./initializeForms";
 import LocationInput from "./location-input/LocationInput.svelte";
 import {
   SheetDataConfig,
-  SheetZips,
   fetchGoogleSheetsZipCodes,
 } from "./location-input/fetchGoogleSheetsZipCodes";
 import { displayBlock, displayNone } from "./visibilityUtils";
@@ -21,7 +20,7 @@ const loadZips = (
 
 export const PreorderApp = {
   initialize: (props: {
-    targetElsAddressInput: HTMLDivElement[];
+    targetElAddressInput: HTMLDivElement;
     googlePublicApiKey: string;
     targetPanel: string;
     targetAddressPanel: string;
@@ -37,7 +36,7 @@ export const PreorderApp = {
     hsFormNewsletter: HubspotFormConfig;
   }) => {
     const {
-      targetElsAddressInput,
+      targetElAddressInput,
       googlePublicApiKey,
       targetPanel,
       targetAddressPanel,
@@ -79,9 +78,20 @@ export const PreorderApp = {
     // open form button actions
     document.querySelectorAll(querySelectorClickToOpenForm).forEach((el) => {
       el.addEventListener("click", () => {
-        displayBlock(panelEl);
-        displayBlock(addressPanelEl, "flex");
-        displayNone(stateContainerEl);
+        targetElAddressInput.scrollIntoView({
+          behavior: "smooth",
+        });
+
+        const y =
+          targetElAddressInput.getBoundingClientRect().top +
+          window.scrollY -
+          300;
+
+        window.scrollTo({ top: y, behavior: "smooth" });
+
+        setTimeout(() => {
+          targetElAddressInput.querySelector("input").focus();
+        }, 1000);
       });
     });
 
@@ -94,20 +104,18 @@ export const PreorderApp = {
       });
     });
 
-    targetElsAddressInput.forEach((target) => {
-      const locationInput = new LocationInput({
-        target: target,
-        props: {
-          googlePublicApiKey,
-          targetAvailableText,
-          targetDisplayAddress,
-          addressPanelEl,
-          targetAvailableStateEl,
-          stateContainerEl,
-          panelEl,
-          targetNotAvailableStateEl,
-        },
-      });
+    const locationInput = new LocationInput({
+      target: targetElAddressInput,
+      props: {
+        googlePublicApiKey,
+        targetAvailableText,
+        targetDisplayAddress,
+        addressPanelEl,
+        targetAvailableStateEl,
+        stateContainerEl,
+        panelEl,
+        targetNotAvailableStateEl,
+      },
     });
   },
 };
