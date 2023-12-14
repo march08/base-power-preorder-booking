@@ -14,6 +14,7 @@ export const initializeHubspotForms = ({
   window.hbspt.forms.create({
     ...hsFormSuccess,
     onFormReady: (prop: [HTMLFormElement] | HTMLFormElement) => {
+      console.log("onFormReady 1", prop);
       const form = Array.isArray(prop) ? prop[0] : prop;
       window.hsFormPreorder = form;
       modifyFormOnLoad(form);
