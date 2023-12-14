@@ -1,6 +1,16 @@
 import type { HubspotFormConfig } from "./Config.types";
 import { modifyFormOnLoad } from "./location-input/hsFormUtils";
 
+type CbFormArg = { 0: HTMLFormElement; length: 1 } | HTMLFormElement;
+
+const getFormFromCb = (cbArg: CbFormArg): HTMLFormElement => {
+  if ("0" in cbArg && "length" in cbArg && cbArg.length === 1) {
+    return cbArg["0"] as HTMLFormElement;
+  }
+
+  return cbArg as HTMLFormElement;
+};
+
 export const initializeHubspotForms = ({
   hsFormSuccess,
   hsFormNewsletter,
@@ -13,14 +23,13 @@ export const initializeHubspotForms = ({
   // initialize success hs
   window.hbspt.forms.create({
     ...hsFormSuccess,
-    onFormReady: (prop: [HTMLFormElement] | HTMLFormElement) => {
-      console.log("onFormReady 1", prop);
-      const form = Array.isArray(prop) ? prop[0] : prop;
+    onFormReady: (args: CbFormArg) => {
+      const form = getFormFromCb(args);
       window.hsFormPreorder = form;
       modifyFormOnLoad(form);
     },
-    onFormSubmit: (prop: [HTMLFormElement] | HTMLFormElement) => {
-      const form = Array.isArray(prop) ? prop[0] : prop;
+    onFormSubmit: (args: CbFormArg) => {
+      const form = getFormFromCb(args);
       const submittedEmail = (
         form.querySelector('input[name="email"]') as HTMLInputElement
       ).value;
@@ -38,8 +47,8 @@ export const initializeHubspotForms = ({
 
   window.hbspt.forms.create({
     ...hsFormNewsletter,
-    onFormReady: (prop: [HTMLFormElement] | HTMLFormElement) => {
-      const form = Array.isArray(prop) ? prop[0] : prop;
+    onFormReady: (args: CbFormArg) => {
+      const form = getFormFromCb(args);
       window.hsFormNewsletter = form;
       modifyFormOnLoad(form);
     },

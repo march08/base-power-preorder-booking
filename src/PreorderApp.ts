@@ -92,7 +92,6 @@ export const PreorderApp = {
 
     // open form button actions
     document.querySelectorAll(querySelectorClickToOpenForm).forEach((el) => {
-      console.log("EE", el);
       el.addEventListener("click", () => {
         showElemenet(panelEl);
         displayBlock(addressPanelEl);
