@@ -53,9 +53,8 @@
       targetDisplayAddressEl.innerHTML = parsed.formattedAddress;
 
       if (window.preorderZipCodes[lookupCode]) {
-        document.querySelectorAll(targetAvailableText).forEach((el) => {
-          el.innerHTML = window.preorderZipCodes[lookupCode];
-        });
+        document.querySelector(targetAvailableText).innerHTML =
+          window.preorderZipCodes[lookupCode];
         displayBlock(targetAvailableStateEl);
         displayNone(targetNotAvailableStateEl);
         setHiddenHubspotInputs(window.hsFormPreorder, parsed);
