@@ -123,6 +123,9 @@
   .autocomplete-container {
     width: 100%;
     position: relative;
+    font-family:
+      PP Neue Montreal Variable,
+      sans-serif;
   }
   .result-list {
     background: white;
