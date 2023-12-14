@@ -1,101 +1,39 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import GooglePlaceAutocomplete from "./googlePlace/GooglePlaceAutocomplete.svelte";
   import { parsePlaceResult } from "./googlePlace/utils";
-  import { modifyFormOnLoad, setHiddenHubspotInputs } from "./hsFormUtils";
-  import {
-    SheetDataConfig,
-    SheetZips,
-    fetchGoogleSheetsZipCodes,
-  } from "./fetchGoogleSheetsZipCodes";
+  import { setHiddenHubspotInputs } from "./hsFormUtils";
+  import { displayBlock, displayNone, showElemenet } from "../visibilityUtils";
 
-  export let stripePaymentLink: string;
-  export let targetPanel: string;
-  export let targetAddressPanel: string;
-  export let targetAvailableState: string;
   export let targetAvailableText: string;
-  export let targetNotAvailableState: string;
   export let targetDisplayAddress: string;
 
-  export let googleSheetConfig: SheetDataConfig;
+  export let googlePublicApiKey: string;
 
-  type HsFormConfig = {
-    target: string;
-    region: string;
-    portalId: string;
-    formId: string;
-    onFormSubmit: any;
-  };
-
-  export let hsFormSuccess: HsFormConfig;
-  export let hsFormNewsletter: HsFormConfig;
-
-  let zipCodes: SheetZips;
-  $: zipCodes = {};
+  export let panelEl: HTMLDivElement;
+  export let stateContainerEl: HTMLDivElement;
+  export let addressPanelEl: HTMLDivElement;
+  export let targetAvailableStateEl: HTMLDivElement;
+  export let targetNotAvailableStateEl: HTMLDivElement;
 
   $: inputErrorMessage = "";
 
-  let hsAvailableFormEl: HTMLFormElement;
-  $: hsAvailableFormEl = undefined;
-  let hsNotAvailableFormEl: HTMLFormElement;
-  $: hsNotAvailableFormEl = undefined;
+  // /**
+  //  * load supported zips
+  //  */
+  // onMount(async () => {
+  //   const f = document.getElementById("hero-address-entry");
+  //   const t = f.firstChild.cloneNode(true);
 
-  const panelElement = document.querySelector(targetPanel) as HTMLDivElement;
-  const addressPanel = document.querySelector(
-    targetAddressPanel
-  ) as HTMLDivElement;
-  const targetAvailableStateEl = document.querySelector(
-    targetAvailableState
-  ) as HTMLDivElement;
-  const targetNotAvailableStateEl = document.querySelector(
-    targetNotAvailableState
-  ) as HTMLDivElement;
-
-  /**
-   * load supported zips
-   */
-  onMount(async () => {
-    const windowWithHubspot = window as unknown as Window & { hbspt: any };
-
-    // initialize success hs
-    windowWithHubspot.hbspt.forms.create({
-      ...hsFormSuccess,
-      onFormReady: (form: HTMLFormElement) => {
-        hsAvailableFormEl = form;
-        modifyFormOnLoad(form);
-      },
-      onFormSubmit: (form: HTMLFormElement) => {
-        const submittedEmail = (
-          form.querySelector('input[name="email"]') as HTMLInputElement
-        ).value;
-
-        hsFormSuccess.onFormSubmit?.(form);
-
-        /**
-         * redirect to the payment page
-         */
-        window.location.href = `${stripePaymentLink}?prefilled_email=${submittedEmail}`;
-      },
-    });
-
-    // newsletter hs
-
-    windowWithHubspot.hbspt.forms.create({
-      ...hsFormNewsletter,
-      onFormReady: (form: HTMLFormElement) => {
-        hsNotAvailableFormEl = form;
-        modifyFormOnLoad(form);
-      },
-    });
-
-    zipCodes = await fetchGoogleSheetsZipCodes(googleSheetConfig);
-  });
+  //   const fk = document.getElementById("address-form");
+  //   fk.appendChild(t);
+  // });
 </script>
 
 <div>
   <GooglePlaceAutocomplete
     class="location-search-input"
-    apiKey={googleSheetConfig.googlePublicApiKey}
+    apiKey={googlePublicApiKey}
+    placeholder="Enter your address"
     onSelect={(value) => {
       const parsed = parsePlaceResult(value);
 
@@ -104,30 +42,27 @@
         return;
       }
 
+      showElemenet(panelEl);
+      displayBlock(stateContainerEl);
+      displayNone(addressPanelEl);
+
       const lookupCode = `${parsed.stateShort}::${parsed.postalCode}`;
 
       const targetDisplayAddressEl =
-        document.querySelectorAll(targetDisplayAddress);
+        document.querySelector(targetDisplayAddress);
+      targetDisplayAddressEl.innerHTML = parsed.formattedAddress;
 
-      targetDisplayAddressEl.forEach((el) => {
-        el.innerHTML = parsed.formattedAddress;
-      });
-
-      // make panel visible
-      panelElement.style.transform = "translateX(0)";
-      addressPanel.style.display = "none";
-
-      if (zipCodes[lookupCode]) {
+      if (window.preorderZipCodes[lookupCode]) {
         document.querySelectorAll(targetAvailableText).forEach((el) => {
-          el.innerHTML = zipCodes[lookupCode];
+          el.innerHTML = window.preorderZipCodes[lookupCode];
         });
-        targetAvailableStateEl.style.display = "block";
-        targetNotAvailableStateEl.style.display = "none";
-        setHiddenHubspotInputs(hsAvailableFormEl, parsed);
+        displayBlock(targetAvailableStateEl);
+        displayNone(targetNotAvailableStateEl);
+        setHiddenHubspotInputs(window.hsFormPreorder, parsed);
       } else {
-        targetAvailableStateEl.style.display = "none";
-        targetNotAvailableStateEl.style.display = "block";
-        setHiddenHubspotInputs(hsNotAvailableFormEl, parsed);
+        displayBlock(targetNotAvailableStateEl);
+        displayNone(targetAvailableStateEl);
+        setHiddenHubspotInputs(window.hsFormNewsletter, parsed);
       }
     }}
     options={{

@@ -99,11 +99,14 @@ export const getStyleEl = () => {
     outline: none;
     border: none;
     transition: .2s all;
-    border-style: solid;font-weight: 400;font-size: 15px;letter-spacing: 0px;height: 44px;padding: 0 32px;color: #090D0FEB;background-color: #56D651;border-width: 0px;border-radius: 12px;text-align: center;
+    border-style: solid;
+    color: white;
+    font-weight: 400;font-size: 15px;letter-spacing: 0px;height: 44px;padding: 0 32px;color: white;background-color: #0F9954;border-width: 0px;border-radius: 12px;text-align: center;
   }
 
   form[class*="hs-form"] .actions input[type="submit"]:hover {
-    border-color: #6c42e0;
+    font-size: 15px;
+    background-color: #0F9954;
   }
 
   form[class*="hs-form"] .hs_error_rollup {
@@ -135,6 +138,10 @@ form[class*="hs-form"] .field.hs-form-field > label {
 .hs_submit.hs-submit .actions {
   padding: 0 !important;
   margin: 0 !important;
+}
+
+form[class*="hs-form"] {
+  padding-bottom: 30px;
 }
 
 `;

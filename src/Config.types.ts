@@ -1,7 +1,9 @@
 export type HubspotFormConfig = {
+  target: string;
   region: string;
   portalId: string;
   formId: string;
+  onFormSubmit?: any;
 };
 
 export type InitConfig = {
