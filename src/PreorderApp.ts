@@ -36,7 +36,7 @@ export const PreorderApp = {
     hsFormNewsletter: HubspotFormConfig;
   }) => {
     const {
-      targetElAddressInput,
+      targetElAddressInput = document.getElementById("hero-address-entry"),
       googlePublicApiKey,
       targetPanel,
       targetAddressPanel,
