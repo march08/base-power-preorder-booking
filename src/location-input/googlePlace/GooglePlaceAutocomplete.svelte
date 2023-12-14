@@ -110,6 +110,7 @@
 <input
   bind:this={inputField}
   class={$$props.class}
+  class:input={true}
   on:change={onChange}
   on:keydown={onKeyDown}
   {placeholder}
