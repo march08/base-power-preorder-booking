@@ -12,6 +12,6 @@ export const displayNone = (el: HTMLElement) => {
   el.style.display = "none";
 };
 
-export const displayBlock = (el: HTMLElement) => {
-  el.style.display = "block";
+export const displayBlock = (el: HTMLElement, display: string = "block") => {
+  el.style.display = display;
 };

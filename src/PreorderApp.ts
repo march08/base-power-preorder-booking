@@ -6,12 +6,7 @@ import {
   SheetZips,
   fetchGoogleSheetsZipCodes,
 } from "./location-input/fetchGoogleSheetsZipCodes";
-import {
-  displayBlock,
-  displayNone,
-  hideElement,
-  showElemenet,
-} from "./visibilityUtils";
+import { displayBlock, displayNone } from "./visibilityUtils";
 
 const loadZips = (
   googlePublicApiKey: string,
@@ -23,15 +18,6 @@ const loadZips = (
   }).then((res) => {
     window.preorderZipCodes = res;
   });
-
-/**
- * close button
- */
-document.querySelectorAll(".close-button").forEach((el) => {
-  el.addEventListener("click", () => {
-    hideElement(document.querySelector("#popup-form"));
-  });
-});
 
 export const PreorderApp = {
   initialize: (props: {
@@ -93,9 +79,18 @@ export const PreorderApp = {
     // open form button actions
     document.querySelectorAll(querySelectorClickToOpenForm).forEach((el) => {
       el.addEventListener("click", () => {
-        showElemenet(panelEl);
-        displayBlock(addressPanelEl);
+        displayBlock(panelEl);
+        displayBlock(addressPanelEl, "flex");
         displayNone(stateContainerEl);
+      });
+    });
+
+    /**
+     * close button
+     */
+    document.querySelectorAll(".close-button").forEach((el) => {
+      el.addEventListener("click", () => {
+        displayNone(panelEl);
       });
     });
 

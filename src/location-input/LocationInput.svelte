@@ -42,7 +42,7 @@
         return;
       }
 
-      showElemenet(panelEl);
+      displayBlock(panelEl);
       displayBlock(stateContainerEl);
       displayNone(addressPanelEl);
 
