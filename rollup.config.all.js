@@ -9,7 +9,7 @@ export default createRollupConfigEmbed((config) => {
       format: "umd",
       exports: "named",
       name: "AccoraConfigurators",
-      file: "public/configurators/all.js",
+      file: "public/preorder-app/embed.js",
     },
   };
 });
