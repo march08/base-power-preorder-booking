@@ -13,16 +13,18 @@ export const initializeHubspotForms = ({
   // initialize success hs
   window.hbspt.forms.create({
     ...hsFormSuccess,
-    onFormReady: (form: [HTMLFormElement]) => {
-      window.hsFormPreorder = form[0];
-      modifyFormOnLoad(form[0]);
+    onFormReady: (prop: [HTMLFormElement] | HTMLFormElement) => {
+      const form = Array.isArray(prop) ? prop[0] : prop;
+      window.hsFormPreorder = form;
+      modifyFormOnLoad(form);
     },
-    onFormSubmit: (form: HTMLFormElement) => {
+    onFormSubmit: (prop: [HTMLFormElement] | HTMLFormElement) => {
+      const form = Array.isArray(prop) ? prop[0] : prop;
       const submittedEmail = (
-        form[0].querySelector('input[name="email"]') as HTMLInputElement
+        form.querySelector('input[name="email"]') as HTMLInputElement
       ).value;
 
-      hsFormSuccess.onFormSubmit?.(form[0]);
+      hsFormSuccess.onFormSubmit?.(form);
 
       /**
        * redirect to the payment page
@@ -35,9 +37,10 @@ export const initializeHubspotForms = ({
 
   window.hbspt.forms.create({
     ...hsFormNewsletter,
-    onFormReady: (form: [HTMLFormElement]) => {
-      window.hsFormNewsletter = form[0];
-      modifyFormOnLoad(form[0]);
+    onFormReady: (prop: [HTMLFormElement] | HTMLFormElement) => {
+      const form = Array.isArray(prop) ? prop[0] : prop;
+      window.hsFormNewsletter = form;
+      modifyFormOnLoad(form);
     },
   });
 };
