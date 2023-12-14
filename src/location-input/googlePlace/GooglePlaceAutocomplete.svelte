@@ -156,6 +156,9 @@
     .pac-item {
       padding: 0 16px;
       line-height: 44px;
+      font-family:
+        PP Neue Montreal Variable,
+        sans-serif;
     }
   }
 
