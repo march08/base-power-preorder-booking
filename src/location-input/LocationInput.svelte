@@ -2,7 +2,12 @@
   import GooglePlaceAutocomplete from "./googlePlace/GooglePlaceAutocomplete.svelte";
   import { parsePlaceResult } from "./googlePlace/utils";
   import { setHiddenHubspotInputs } from "./hsFormUtils";
-  import { displayBlock, displayNone, showElemenet } from "../visibilityUtils";
+  import {
+    displayBlock,
+    displayNone,
+    fadeIn,
+    showElemenet,
+  } from "../visibilityUtils";
 
   export let targetAvailableText: string;
   export let targetDisplayAddress: string;
@@ -16,59 +21,66 @@
   export let targetNotAvailableStateEl: HTMLDivElement;
 
   $: inputErrorMessage = "";
+  let selectedAddress: ReturnType<typeof parsePlaceResult> | undefined;
+  $: selectedAddress = undefined;
 
-  // /**
-  //  * load supported zips
-  //  */
-  // onMount(async () => {
-  //   const f = document.getElementById("hero-address-entry");
-  //   const t = f.firstChild.cloneNode(true);
+  const handleSubmit = () => {
+    if (!selectedAddress) {
+      inputErrorMessage = "Please select an address with ZIP code.";
+      return;
+    }
+    if (!selectedAddress.postalCode) {
+      inputErrorMessage = "Please select an address with ZIP code.";
+      return;
+    }
 
-  //   const fk = document.getElementById("address-form");
-  //   fk.appendChild(t);
-  // });
+    fadeIn(panelEl);
+    displayBlock(stateContainerEl);
+    displayNone(addressPanelEl);
+
+    const lookupCode = `${selectedAddress.stateShort}::${selectedAddress.postalCode}`;
+
+    const targetDisplayAddressEl = document.querySelector(targetDisplayAddress);
+    targetDisplayAddressEl.innerHTML = selectedAddress.formattedAddress;
+
+    if (window.preorderZipCodes[lookupCode]) {
+      document.querySelector(targetAvailableText).innerHTML =
+        window.preorderZipCodes[lookupCode];
+      displayBlock(targetAvailableStateEl);
+      displayNone(targetNotAvailableStateEl);
+      setHiddenHubspotInputs(window.hsFormPreorder, selectedAddress);
+    } else {
+      displayBlock(targetNotAvailableStateEl);
+      displayNone(targetAvailableStateEl);
+      setHiddenHubspotInputs(window.hsFormNewsletter, selectedAddress);
+    }
+  };
 </script>
 
 <div>
-  <GooglePlaceAutocomplete
-    class="location-search-input"
-    apiKey={googlePublicApiKey}
-    placeholder="Enter your address"
-    onSelect={(value) => {
-      const parsed = parsePlaceResult(value);
-      window.blur();
+  <div class="input-address-container">
+    <GooglePlaceAutocomplete
+      class="location-search-input"
+      apiKey={googlePublicApiKey}
+      placeholder="Enter your address"
+      onSelect={(value) => {
+        const parsed = parsePlaceResult(value);
+        window.blur();
+        inputErrorMessage = "";
 
-      if (!parsed.postalCode) {
-        inputErrorMessage = "Please select an address with ZIP code.";
-        return;
-      }
-
-      displayBlock(panelEl);
-      displayBlock(stateContainerEl);
-      displayNone(addressPanelEl);
-
-      const lookupCode = `${parsed.stateShort}::${parsed.postalCode}`;
-
-      const targetDisplayAddressEl =
-        document.querySelector(targetDisplayAddress);
-      targetDisplayAddressEl.innerHTML = parsed.formattedAddress;
-
-      if (window.preorderZipCodes[lookupCode]) {
-        document.querySelector(targetAvailableText).innerHTML =
-          window.preorderZipCodes[lookupCode];
-        displayBlock(targetAvailableStateEl);
-        displayNone(targetNotAvailableStateEl);
-        setHiddenHubspotInputs(window.hsFormPreorder, parsed);
-      } else {
-        displayBlock(targetNotAvailableStateEl);
-        displayNone(targetAvailableStateEl);
-        setHiddenHubspotInputs(window.hsFormNewsletter, parsed);
-      }
-    }}
-    options={{
-      componentRestrictions: { country: "us" },
-    }}
-  />
+        selectedAddress = parsed;
+      }}
+      options={{
+        componentRestrictions: { country: "us" },
+      }}
+    />
+    <button
+      on:click={handleSubmit}
+      class="submitAddressButton button secondary w-button"
+    >
+      Check Availability
+    </button>
+  </div>
   {#if inputErrorMessage}
     <p class="preorder-address-error-message">
       {inputErrorMessage}
@@ -85,6 +97,21 @@
 </svelte:head>
 
 <style lang="scss" global>
+  .submitAddressButton {
+    flex-shrink: 0;
+  }
+  .input-address-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
   .preorder-address-error-message {
     color: #c95151;
     font-size: 14px;
@@ -92,7 +119,7 @@
   }
   .location-search-input {
     border: none;
-    background: rgba(250, 254, 255, 0.97);
+    background: #fafefff7;
     border-radius: 12px;
     height: 44px;
     border: none !important;

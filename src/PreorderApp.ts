@@ -5,7 +5,7 @@ import {
   SheetDataConfig,
   fetchGoogleSheetsZipCodes,
 } from "./location-input/fetchGoogleSheetsZipCodes";
-import { displayBlock, displayNone } from "./visibilityUtils";
+import { displayBlock, displayNone, fadeOut } from "./visibilityUtils";
 
 const loadZips = (
   googlePublicApiKey: string,
@@ -100,7 +100,7 @@ export const PreorderApp = {
      */
     document.querySelectorAll(".close-button").forEach((el) => {
       el.addEventListener("click", () => {
-        displayNone(panelEl);
+        fadeOut(panelEl);
       });
     });
 
