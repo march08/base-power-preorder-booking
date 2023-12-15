@@ -52,5 +52,12 @@ export const initializeHubspotForms = ({
       window.hsFormNewsletter = form;
       modifyFormOnLoad(form);
     },
+    onFormSubmit: (args: CbFormArg) => {
+      hsFormNewsletter.onFormSubmit?.(args);
+      /**
+       * redirect to the payment page
+       */
+      window.location.href = "/newsletter-confirmation";
+    },
   });
 };

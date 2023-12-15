@@ -36,7 +36,7 @@ PreorderApp.initialize({
     portalId: "43873875",
     formId: "bdfdc2d3-1e91-44e7-a477-02a68a93d0f9",
     onFormSubmit: (r) => {
-      console.log("r", r);
+      window.location.href = "https://9gag.com";
     },
   },
 });
