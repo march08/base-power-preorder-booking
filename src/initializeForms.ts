@@ -58,6 +58,7 @@ export const initializeHubspotForms = ({
       /**
        * redirect to the payment page
        */
+      document.body.parentElement.style.background = "#333";
       fadeOut(document.body as any);
       setTimeout(() => {
         window.location.href = "/newsletter-confirmation";
