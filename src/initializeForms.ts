@@ -1,5 +1,6 @@
 import type { HubspotFormConfig } from "./Config.types";
 import { modifyFormOnLoad } from "./location-input/hsFormUtils";
+import { fadeOut } from "./visibilityUtils";
 
 type CbFormArg = { 0: HTMLFormElement; length: 1 } | HTMLFormElement;
 
@@ -57,7 +58,10 @@ export const initializeHubspotForms = ({
       /**
        * redirect to the payment page
        */
-      window.location.href = "/newsletter-confirmation";
+      fadeOut(document.body as any);
+      setTimeout(() => {
+        window.location.href = "/newsletter-confirmation";
+      }, 500);
     },
   });
 };
