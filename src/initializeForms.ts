@@ -12,6 +12,8 @@ const getFormFromCb = (cbArg: CbFormArg): HTMLFormElement => {
   return cbArg as HTMLFormElement;
 };
 
+let submittedSuccessEmail: string = undefined;
+
 export const initializeHubspotForms = ({
   hsFormSuccess,
   hsFormNewsletter,
@@ -35,12 +37,15 @@ export const initializeHubspotForms = ({
         form.querySelector('input[name="email"]') as HTMLInputElement
       ).value;
 
-      hsFormSuccess.onFormSubmit?.(form);
+      submittedSuccessEmail = submittedEmail;
 
+      hsFormSuccess.onFormSubmit?.(form);
+    },
+    onFormSubmitted: () => {
       /**
        * redirect to the payment page
        */
-      window.location.href = `${stripePaymentLink}?prefilled_email=${submittedEmail}`;
+      window.location.href = `${stripePaymentLink}?prefilled_email=${submittedSuccessEmail}`;
     },
   });
 
@@ -53,7 +58,7 @@ export const initializeHubspotForms = ({
       window.hsFormNewsletter = form;
       modifyFormOnLoad(form);
     },
-    onFormSubmit: (args: CbFormArg) => {
+    onFormSubmitted: (args: CbFormArg) => {
       hsFormNewsletter.onFormSubmit?.(args);
       /**
        * redirect to the payment page
