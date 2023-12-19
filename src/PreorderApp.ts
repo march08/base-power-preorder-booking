@@ -5,6 +5,7 @@ import {
   SheetDataConfig,
   fetchGoogleSheetsZipCodes,
 } from "./location-input/fetchGoogleSheetsZipCodes";
+import type { ParsedPlaceResult } from "./location-input/googlePlace/utils";
 import { displayBlock, displayNone, fadeOut } from "./visibilityUtils";
 
 const loadZips = (
@@ -34,6 +35,7 @@ export const PreorderApp = {
     stripePaymentLink: string;
     hsFormSuccess: HubspotFormConfig;
     hsFormNewsletter: HubspotFormConfig;
+    onAddressSelect?: (data: ParsedPlaceResult) => void;
   }) => {
     const {
       targetElAddressInput = document.getElementById("hero-address-entry"),
@@ -50,6 +52,7 @@ export const PreorderApp = {
       hsFormSuccess,
       hsFormNewsletter,
       querySelectorClickToOpenForm,
+      onAddressSelect,
     } = props;
 
     loadZips(googlePublicApiKey, googleSheetConfig);
@@ -115,6 +118,7 @@ export const PreorderApp = {
         stateContainerEl,
         panelEl,
         targetNotAvailableStateEl,
+        onAddressSelect,
       },
     });
   },

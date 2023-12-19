@@ -1,6 +1,6 @@
 <script lang="ts">
   import GooglePlaceAutocomplete from "./googlePlace/GooglePlaceAutocomplete.svelte";
-  import { parsePlaceResult } from "./googlePlace/utils";
+  import { ParsedPlaceResult, parsePlaceResult } from "./googlePlace/utils";
   import { setHiddenHubspotInputs } from "./hsFormUtils";
   import {
     displayBlock,
@@ -19,6 +19,7 @@
   export let addressPanelEl: HTMLDivElement;
   export let targetAvailableStateEl: HTMLDivElement;
   export let targetNotAvailableStateEl: HTMLDivElement;
+  export let onAddressSelect: (data: ParsedPlaceResult) => void | undefined;
 
   $: inputErrorMessage = "";
   let selectedAddress: ReturnType<typeof parsePlaceResult> | undefined;
@@ -65,6 +66,7 @@
       placeholder="Enter your address"
       onSelect={(value) => {
         const parsed = parsePlaceResult(value);
+        onAddressSelect?.(parsed);
         window.blur();
         inputErrorMessage = "";
 
