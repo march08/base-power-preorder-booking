@@ -58,8 +58,7 @@ export const initializeHubspotForms = ({
       window.hsFormNewsletter = form;
       modifyFormOnLoad(form);
     },
-    onFormSubmitted: (args: CbFormArg) => {
-      hsFormNewsletter.onFormSubmit?.(args);
+    onFormSubmitted: () => {
       /**
        * redirect to the payment page
        */

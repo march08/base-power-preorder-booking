@@ -36,6 +36,10 @@ export const PreorderApp = {
     hsFormSuccess: HubspotFormConfig;
     hsFormNewsletter: HubspotFormConfig;
     onAddressSelect?: (data: ParsedPlaceResult) => void;
+    onAddressSubmitSuccess?: (
+      data: ParsedPlaceResult,
+      type: string
+    ) => void | undefined;
   }) => {
     const {
       targetElAddressInput = document.getElementById("hero-address-entry"),
@@ -53,6 +57,7 @@ export const PreorderApp = {
       hsFormNewsletter,
       querySelectorClickToOpenForm,
       onAddressSelect,
+      onAddressSubmitSuccess,
     } = props;
 
     loadZips(googlePublicApiKey, googleSheetConfig);
@@ -119,6 +124,7 @@ export const PreorderApp = {
         panelEl,
         targetNotAvailableStateEl,
         onAddressSelect,
+        onAddressSubmitSuccess,
       },
     });
   },

@@ -20,6 +20,10 @@
   export let targetAvailableStateEl: HTMLDivElement;
   export let targetNotAvailableStateEl: HTMLDivElement;
   export let onAddressSelect: (data: ParsedPlaceResult) => void | undefined;
+  export let onAddressSubmitSuccess: (
+    data: ParsedPlaceResult,
+    type: string
+  ) => void | undefined;
 
   $: inputErrorMessage = "";
   let selectedAddress: ReturnType<typeof parsePlaceResult> | undefined;
@@ -50,10 +54,12 @@
       displayBlock(targetAvailableStateEl);
       displayNone(targetNotAvailableStateEl);
       setHiddenHubspotInputs(window.hsFormPreorder, selectedAddress);
+      onAddressSubmitSuccess?.(selectedAddress, "lead-preorder-form");
     } else {
       displayBlock(targetNotAvailableStateEl);
       displayNone(targetAvailableStateEl);
       setHiddenHubspotInputs(window.hsFormNewsletter, selectedAddress);
+      onAddressSubmitSuccess?.(selectedAddress, "lead-newsletter-form");
     }
   };
 </script>

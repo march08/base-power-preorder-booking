@@ -41,7 +41,7 @@
       dispatch("ready");
       setTimeout(() => {
         inputField.setAttribute("autocomplete", "one-time-code");
-      }, 500);
+      }, 2000);
     });
   });
 
