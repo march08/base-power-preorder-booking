@@ -151,16 +151,26 @@ form[class*="hs-form"] {
   return styleEl;
 };
 
+const formFields = [
+  "zip",
+  "state",
+  "country",
+  "city",
+  "address",
+  "formatted_address",
+] as const;
+type HsFieldToHide = (typeof formFields)[number];
+
 const setInputValue = (
   form: HTMLFormElement,
-  fieldName: string,
+  fieldName: HsFieldToHide,
   value: string
 ) => {
   try {
-    const inputZip = form.querySelector(
+    const input = form.querySelector(
       `input[name="${fieldName}"]`
     ) as HTMLInputElement;
-    inputZip.value = value;
+    input.value = value;
   } catch {
     console.log("cannot set field value", fieldName, value);
   }
@@ -174,7 +184,12 @@ export const setHiddenHubspotInputs = (
   setInputValue(form, "state", parsedData.stateShort);
   setInputValue(form, "country", parsedData.countryCode);
   setInputValue(form, "city", parsedData.city);
-  setInputValue(form, "address", parsedData.formattedAddress);
+  setInputValue(
+    form,
+    "address",
+    `${parsedData.houseNumber} ${parsedData.street}`
+  );
+  setInputValue(form, "formatted_address", parsedData.formattedAddress);
 };
 
 const hideField = (form: HTMLFormElement, fieldName: string) => {
@@ -188,12 +203,12 @@ const hideField = (form: HTMLFormElement, fieldName: string) => {
   }
 };
 
-const hideFields = (form: HTMLFormElement, fieldNames: string[]) => {
-  fieldNames.forEach((fieldName) => hideField(form, fieldName));
+const hideFields = (form: HTMLFormElement) => {
+  formFields.forEach((fieldName) => hideField(form, fieldName));
 };
 
 export const modifyFormOnLoad = (form: HTMLFormElement) => {
-  hideFields(form, ["zip", "state", "address", "city", "country"]);
+  hideFields(form);
 
   // append styles
   form.appendChild(getStyleEl());
