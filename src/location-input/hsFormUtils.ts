@@ -157,6 +157,7 @@ const formFields = [
   "country",
   "city",
   "address",
+  "street_2",
   "formatted_address",
 ] as const;
 type HsFieldToHide = (typeof formFields)[number];
@@ -184,6 +185,7 @@ export const setHiddenHubspotInputs = (
   setInputValue(form, "state", parsedData.stateShort);
   setInputValue(form, "country", parsedData.countryCode);
   setInputValue(form, "city", parsedData.city);
+  setInputValue(form, "street_2", parsedData.street_2);
   setInputValue(
     form,
     "address",

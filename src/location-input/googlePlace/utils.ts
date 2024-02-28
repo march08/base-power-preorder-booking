@@ -28,6 +28,10 @@ export const parsePlaceResult = (place: google.maps.places.PlaceResult) => {
     externalUrl: place.url,
     houseNumber: placeGet("street_number"),
     street: placeGet("route"),
+    street_2:
+      [placeGet("floor"), placeGet("subpremise")]
+        .filter((item) => !!item)
+        .join(",") || null,
     city:
       placeGet("locality") ||
       placeGet("sublocality") ||
