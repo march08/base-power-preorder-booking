@@ -2,8 +2,8 @@ import type { ParsedPlaceResult } from "./googlePlace/utils";
 
 export const getStyleEl = () => {
   let styles = `
-  html, body, input, button, label {
-    font-family: Helvetica, sans-serif !important;
+  html, body, input, button, label, select {
+    font-family: PP Neue Montreal Variable, sans-serif !important,
   }
   input, button {
     -webkit-appearance:none;
@@ -22,6 +22,7 @@ export const getStyleEl = () => {
     flex-wrap: wrap;
     flex-direction: column;
     gap: 1rem;
+    font-family: PP Neue Montreal Variable, sans-serif,
   }
   form[class*="hs-form"] fieldset { max-width: none; display: flex; flex-wrap: wrap; }
   form[class*="hs-form"] fieldset > .field.hs-form-field { width: 1px; flex-grow: 1; min-width: 230px; }
