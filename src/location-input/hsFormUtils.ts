@@ -37,6 +37,7 @@ export const getStyleEl = () => {
     outline: none;
     border: 1px solid black;
     transition: .2s all;
+    font-family: PP Neue Montreal Variable, sans-serif,
   }
   
   form[class*="hs-form"] .field.hs-form-field .input textarea {
@@ -60,16 +61,21 @@ export const getStyleEl = () => {
   form[class*="hs-form"] .field.hs-form-field .input input,
   form[class*="hs-form"] .field.hs-form-field .input select,
   form[class*="hs-form"] .field.hs-form-field .input textarea {
-    font-weight: 400;border-style: solid;font-size: 15px;letter-spacing: 0px;height: 44px;padding: 0 24px;border-color: #EFF1F2;color: #090D0FEB;background-color: #EFF1F2;border-width: 0px;border-radius: 12px;
-  }
-  form[class*="hs-form"] .field.hs-form-field .input input:hover,
-  form[class*="hs-form"] .field.hs-form-field .input select:hover,
-  form[class*="hs-form"] .field.hs-form-field .input textarea:hover{
-    border-color: #000000;
+    font-weight: 400;
+    border-style: solid;
+    font-size: 15px;
+    letter-spacing: 0px;
+    height: 44px;
+    padding: 0 16px !important;
+    border-color: #EFF1F2;
+    color: #090D0FEB;
+    background-color: #EFF1F2;
+    border-width: 0px;
+    border-radius: 12px;
   }
   form[class*="hs-form"] .field.hs-form-field .input textarea {
     height: 150px;
-    padding: 24px;
+    padding: 16px !important;
   }
 
   form[class*="hs-form"] .field.hs-form-field .input input::placeholder,
