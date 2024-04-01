@@ -16,8 +16,6 @@ PreorderApp.initialize({
   querySelectorClickToOpenForm: '[data-preorder="open"]',
 
   // stripe
-
-  stripePaymentLink: "https://buy.stripe.com/test_9AQ4ip3u22r5aLm5kk",
   googleSheetConfig: {
     sheetId: "11gEG0LH5svkrjEjVDl63Cm3eFsmkFiR15kP2ODpVzqg",
     sheetPage: "Deregulated Zip Codes",
@@ -29,9 +27,20 @@ PreorderApp.initialize({
     // region: "na1",
     // portalId: "43873875",
     // formId: "a41c83a1-a371-4080-be84-5699814bc294",
+    //https://app-eu1.hubspot.com/forms/144428308/editor/a9633337-f802-4195-b3f7-95db5f75516b/edit/form/field/0-1%2Faddress
     region: "eu1",
-    portalId: "26542071",
-    formId: "3cda8361-19a7-4336-b522-edc27e1d66fc",
+    portalId: "144428308",
+    formId: "a9633337-f802-4195-b3f7-95db5f75516b",
+    onFormSubmitted: (form, args) => {
+      if (
+        args.submissionValues.zipConfig.servingNow === "yes" &&
+        args.submissionValues.existing_solar === "No"
+      ) {
+        window.location.href = "/confirmation-booking";
+      } else {
+        window.location.href = "/confirmation";
+      }
+    },
   },
   hsFormNewsletter: {
     target: "#hubspot-email-form",
@@ -39,10 +48,10 @@ PreorderApp.initialize({
     // portalId: "43873875",
     // formId: "bdfdc2d3-1e91-44e7-a477-02a68a93d0f9",
     region: "eu1",
-    portalId: "26542071",
-    formId: "e9e30637-a84c-45ea-a7d1-b2a34ee40059",
-    onFormSubmit: (r) => {
-      // window.location.href = "https://9gag.com";
+    portalId: "144428308",
+    formId: "a9633337-f802-4195-b3f7-95db5f75516b",
+    onFormSubmitted: () => {
+      window.location.href = "/newsletter-confirmation";
     },
   },
 

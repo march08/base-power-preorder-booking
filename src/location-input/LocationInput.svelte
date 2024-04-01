@@ -1,18 +1,30 @@
 <script lang="ts">
   import GooglePlaceAutocomplete from "./googlePlace/GooglePlaceAutocomplete.svelte";
   import { ParsedPlaceResult, parsePlaceResult } from "./googlePlace/utils";
-  import { setHiddenHubspotInputs } from "./hsFormUtils";
+  import { setHiddenHubspotInputs } from "./hubspot/hsFormUtils";
   import {
     displayBlock,
     displayNone,
     fadeIn,
     showElemenet,
   } from "../visibilityUtils";
+  import { onMount } from "svelte";
+  import { getZipStore } from "./zipData/zipStore";
+  import type { SheetDataConfig, StoredZipDataItem } from "./zipData/types";
+  import type { OnAddressSubmitSuccess } from "../types";
+  import { hsFormStateBooking } from "../windowVars";
 
   export let targetAvailableText: string;
   export let targetDisplayAddress: string;
 
   export let googlePublicApiKey: string;
+  export let googleSheetConfig: SheetDataConfig;
+
+  const { store: zipStore, load: loadZips } = getZipStore(googleSheetConfig);
+
+  onMount(async () => {
+    loadZips();
+  });
 
   export let panelEl: HTMLDivElement;
   export let stateContainerEl: HTMLDivElement;
@@ -20,13 +32,10 @@
   export let targetAvailableStateEl: HTMLDivElement;
   export let targetNotAvailableStateEl: HTMLDivElement;
   export let onAddressSelect: (data: ParsedPlaceResult) => void | undefined;
-  export let onAddressSubmitSuccess: (
-    data: ParsedPlaceResult,
-    type: string
-  ) => void | undefined;
+  export let onAddressSubmitSuccess: OnAddressSubmitSuccess = () => {};
 
   $: inputErrorMessage = "";
-  let selectedAddress: ReturnType<typeof parsePlaceResult> | undefined;
+  let selectedAddress: ParsedPlaceResult | undefined;
   $: selectedAddress = undefined;
 
   const handleSubmit = () => {
@@ -43,23 +52,50 @@
     displayBlock(stateContainerEl);
     displayNone(addressPanelEl);
 
-    const lookupCode = `${selectedAddress.stateShort}::${selectedAddress.postalCode}`;
-
     const targetDisplayAddressEl = document.querySelector(targetDisplayAddress);
     targetDisplayAddressEl.innerHTML = selectedAddress.formattedAddress;
 
-    if (window.preorderZipCodes[lookupCode]) {
+    const foundZipItem: StoredZipDataItem | null =
+      $zipStore.find((zipItem) => {
+        return (
+          zipItem.stateShort === selectedAddress.stateShort &&
+          zipItem.zip === selectedAddress.postalCode
+        );
+      }) || null;
+
+    if (foundZipItem) {
       document.querySelector(targetAvailableText).innerHTML =
-        window.preorderZipCodes[lookupCode];
+        foundZipItem.availability;
+
       displayBlock(targetAvailableStateEl);
       displayNone(targetNotAvailableStateEl);
-      setHiddenHubspotInputs(window.hsFormPreorder, selectedAddress);
-      onAddressSubmitSuccess?.(selectedAddress, "lead-preorder-form");
+      setHiddenHubspotInputs(
+        window.hsFormPreorder,
+        selectedAddress,
+        foundZipItem
+      );
+      hsFormStateBooking.update({
+        selectedAddress,
+        zipConfig: foundZipItem,
+      });
+      onAddressSubmitSuccess?.(
+        selectedAddress,
+        "lead-preorder-form",
+        foundZipItem
+      );
     } else {
       displayBlock(targetNotAvailableStateEl);
       displayNone(targetAvailableStateEl);
       setHiddenHubspotInputs(window.hsFormNewsletter, selectedAddress);
-      onAddressSubmitSuccess?.(selectedAddress, "lead-newsletter-form");
+      hsFormStateBooking.update({
+        selectedAddress,
+        zipConfig: null,
+      });
+      onAddressSubmitSuccess?.(
+        selectedAddress,
+        "lead-newsletter-form",
+        foundZipItem
+      );
     }
   };
 </script>

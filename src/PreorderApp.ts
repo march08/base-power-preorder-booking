@@ -1,46 +1,12 @@
-import type { HubspotFormConfig } from "./Config.types";
+import type { HubspotFormConfig, PreorderAppConfig } from "./Config.types";
 import { initializeHubspotForms } from "./initializeForms";
 import LocationInput from "./location-input/LocationInput.svelte";
-import {
-  SheetDataConfig,
-  fetchGoogleSheetsZipCodes,
-} from "./location-input/fetchGoogleSheetsZipCodes";
 import type { ParsedPlaceResult } from "./location-input/googlePlace/utils";
-import { displayBlock, displayNone, fadeOut } from "./visibilityUtils";
-
-const loadZips = (
-  googlePublicApiKey: string,
-  config: Pick<SheetDataConfig, "sheetId" | "sheetPage">
-) =>
-  fetchGoogleSheetsZipCodes({
-    googlePublicApiKey,
-    ...config,
-  }).then((res) => {
-    window.preorderZipCodes = res;
-  });
+import type { SheetDataConfig } from "./location-input/zipData/types";
+import { fadeOut } from "./visibilityUtils";
 
 export const PreorderApp = {
-  initialize: (props: {
-    targetElAddressInput: HTMLDivElement;
-    googlePublicApiKey: string;
-    targetPanel: string;
-    targetAddressPanel: string;
-    targetAvailableState: string;
-    targetNotAvailableState: string;
-    targetStateContainer: string;
-    targetAvailableText: string;
-    targetDisplayAddress: string;
-    querySelectorClickToOpenForm: string;
-    googleSheetConfig: Pick<SheetDataConfig, "sheetId" | "sheetPage">;
-    stripePaymentLink: string;
-    hsFormSuccess: HubspotFormConfig;
-    hsFormNewsletter: HubspotFormConfig;
-    onAddressSelect?: (data: ParsedPlaceResult) => void;
-    onAddressSubmitSuccess?: (
-      data: ParsedPlaceResult,
-      type: string
-    ) => void | undefined;
-  }) => {
+  initialize: (props: PreorderAppConfig) => {
     const {
       targetElAddressInput = document.getElementById("hero-address-entry"),
       googlePublicApiKey,
@@ -52,7 +18,6 @@ export const PreorderApp = {
       targetAvailableText,
       targetDisplayAddress,
       googleSheetConfig,
-      stripePaymentLink,
       hsFormSuccess,
       hsFormNewsletter,
       querySelectorClickToOpenForm,
@@ -60,10 +25,7 @@ export const PreorderApp = {
       onAddressSubmitSuccess,
     } = props;
 
-    loadZips(googlePublicApiKey, googleSheetConfig);
-
     initializeHubspotForms({
-      stripePaymentLink,
       hsFormSuccess,
       hsFormNewsletter,
     });
@@ -116,6 +78,10 @@ export const PreorderApp = {
       target: targetElAddressInput,
       props: {
         googlePublicApiKey,
+        googleSheetConfig: {
+          ...googleSheetConfig,
+          googlePublicApiKey,
+        },
         targetAvailableText,
         targetDisplayAddress,
         addressPanelEl,
@@ -127,5 +93,7 @@ export const PreorderApp = {
         onAddressSubmitSuccess,
       },
     });
+
+    return locationInput;
   },
 };

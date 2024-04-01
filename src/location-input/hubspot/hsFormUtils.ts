@@ -1,4 +1,6 @@
-import type { ParsedPlaceResult } from "./googlePlace/utils";
+import type { ParsedPlaceResult } from "../googlePlace/utils";
+import { isTruthy } from "../utils/isTruthy";
+import type { StoredZipDataItem } from "../zipData/types";
 
 export const getStyleEl = () => {
   let styles = `
@@ -166,6 +168,8 @@ const formFields = [
   "address",
   "street_2",
   "formatted_address",
+  "postal_code_availability",
+  "postal_code_availability_serving_now",
 ] as const;
 type HsFieldToHide = (typeof formFields)[number];
 
@@ -186,7 +190,8 @@ const setInputValue = (
 
 export const setHiddenHubspotInputs = (
   form: HTMLFormElement,
-  parsedData: ParsedPlaceResult
+  parsedData: ParsedPlaceResult,
+  zipConfig?: StoredZipDataItem | null
 ) => {
   setInputValue(form, "zip", parsedData.postalCode);
   setInputValue(form, "state", parsedData.stateShort);
@@ -196,9 +201,18 @@ export const setHiddenHubspotInputs = (
   setInputValue(
     form,
     "address",
-    `${parsedData.houseNumber} ${parsedData.street}`
+    [parsedData.houseNumber, parsedData.street].filter(isTruthy).join(" ")
   );
   setInputValue(form, "formatted_address", parsedData.formattedAddress);
+
+  if (zipConfig) {
+    setInputValue(form, "postal_code_availability", zipConfig.availability);
+    setInputValue(
+      form,
+      "postal_code_availability_serving_now",
+      zipConfig.servingNow
+    );
+  }
 };
 
 const hideField = (form: HTMLFormElement, fieldName: string) => {
