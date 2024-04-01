@@ -46,8 +46,8 @@
         gtag("event", "newsletter-submitted");
       },
     },
-    onAddressSubmitSuccess: (addressData, leadType) => {
-      gtag("event", "address-submit", { leadType, addressData });
+    onAddressSubmitSuccess: (addressData, leadType, zipConfig) => {
+      gtag("event", "address-submit", { leadType, addressData, zipConfig });
     },
     onFormSubmitted: () => {
       window.location.href = "/newsletter-confirmation";
