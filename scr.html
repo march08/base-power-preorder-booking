@@ -27,6 +27,7 @@
         gtag("event", "preorder-submitted");
       },
       onFormSubmitted: (form, args) => {
+        // redirect is now controlled from here
         if (
           args.submissionValues.zipConfig.servingNow === "yes" &&
           args.submissionValues.existing_solar === "No"
@@ -45,12 +46,13 @@
       onFormSubmit: () => {
         gtag("event", "newsletter-submitted");
       },
+      onFormSubmitted: () => {
+        // redirect is now controlled from here
+        window.location.href = "/newsletter-confirmation";
+      },
     },
     onAddressSubmitSuccess: (addressData, leadType, zipConfig) => {
       gtag("event", "address-submit", { leadType, addressData, zipConfig });
-    },
-    onFormSubmitted: () => {
-      window.location.href = "/newsletter-confirmation";
     },
   });
 </script>
