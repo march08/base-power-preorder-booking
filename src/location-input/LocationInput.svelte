@@ -2,12 +2,7 @@
   import GooglePlaceAutocomplete from "./googlePlace/GooglePlaceAutocomplete.svelte";
   import { ParsedPlaceResult, parsePlaceResult } from "./googlePlace/utils";
   import { setHiddenHubspotInputs } from "./hubspot/hsFormUtils";
-  import {
-    displayBlock,
-    displayNone,
-    fadeIn,
-    showElemenet,
-  } from "../visibilityUtils";
+  import { displayBlock, displayNone, fadeIn } from "../visibilityUtils";
   import { onMount } from "svelte";
   import { getZipStore } from "./zipData/zipStore";
   import type { SheetDataConfig, StoredZipDataItem } from "./zipData/types";
@@ -19,6 +14,7 @@
 
   export let googlePublicApiKey: string;
   export let googleSheetConfig: SheetDataConfig;
+  export let addressCtaText: string = "Get Started";
 
   const { store: zipStore, load: loadZips } = getZipStore(googleSheetConfig);
 
@@ -122,7 +118,7 @@
       on:click={handleSubmit}
       class="submitAddressButton button secondary w-button"
     >
-      Check Availability
+      {addressCtaText}
     </button>
   </div>
   {#if inputErrorMessage}

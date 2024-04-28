@@ -1,8 +1,6 @@
-import type { HubspotFormConfig, PreorderAppConfig } from "./Config.types";
+import type { PreorderAppConfig } from "./Config.types";
 import { initializeHubspotForms } from "./initializeForms";
 import LocationInput from "./location-input/LocationInput.svelte";
-import type { ParsedPlaceResult } from "./location-input/googlePlace/utils";
-import type { SheetDataConfig } from "./location-input/zipData/types";
 import { fadeOut } from "./visibilityUtils";
 
 export const PreorderApp = {
@@ -23,6 +21,7 @@ export const PreorderApp = {
       querySelectorClickToOpenForm,
       onAddressSelect,
       onAddressSubmitSuccess,
+      addressCtaText,
     } = props;
 
     initializeHubspotForms({
@@ -91,6 +90,7 @@ export const PreorderApp = {
         targetNotAvailableStateEl,
         onAddressSelect,
         onAddressSubmitSuccess,
+        addressCtaText,
       },
     });
 

@@ -41,5 +41,6 @@ export type PreorderAppConfig = {
     data: ParsedPlaceResult,
     type: string
   ) => void | undefined;
+  addressCtaText?: string;
 };
 export type SubmitFormDescription = { label: string; value: string }[];
