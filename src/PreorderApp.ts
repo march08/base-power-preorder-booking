@@ -77,10 +77,7 @@ export const PreorderApp = {
       target: targetElAddressInput,
       props: {
         googlePublicApiKey,
-        googleSheetConfig: {
-          ...googleSheetConfig,
-          googlePublicApiKey,
-        },
+        googleSheetConfig,
         targetAvailableText,
         targetDisplayAddress,
         addressPanelEl,

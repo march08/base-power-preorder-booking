@@ -50,7 +50,6 @@
 
     const targetDisplayAddressEl = document.querySelector(targetDisplayAddress);
     targetDisplayAddressEl.innerHTML = selectedAddress.formattedAddress;
-
     const foundZipItem: StoredZipDataItem | null =
       $zipStore.find((zipItem) => {
         return (
