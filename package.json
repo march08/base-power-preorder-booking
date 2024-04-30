@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
-    "deploy": "yarn build && node gh-pages",
+    "deploy": "npm build && node gh-pages",
     "build:embed": "rollup -c rollup.config.all.js && git add . && git commit -m 'new build'",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
