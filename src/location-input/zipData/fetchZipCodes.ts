@@ -45,7 +45,7 @@ const colNameLookup: { [key in StoredZipCSVColumnName]: StoredZipDataItemKey } =
     serving_now: "servingNow",
   };
 
-const unmarshall = (csv: string): StoredZipData => {
+const unmarshal = (csv: string): StoredZipData => {
   const rows = csv.split("\n");
   if (rows.length < 1) {
     return;
@@ -80,5 +80,5 @@ export const fetchZipCodes = async (
 ): Promise<StoredZipData> => {
   const zipCSV = await fetch(config.zipsCsvUrl);
   const csvText = await (await zipCSV.blob()).text();
-  return unmarshall(csvText);
+  return unmarshal(csvText);
 };

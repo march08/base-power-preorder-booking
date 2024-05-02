@@ -9,10 +9,9 @@ export const getZipStore = (sheetConfig: SheetDataConfig) => {
   const load = async () => {
     try {
       const res = await fetchZipCodes(sheetConfig);
-      console.log("response: ", res);
       store.set(res);
     } catch (e) {
-      console.log("Cannot load zips", e);
+      console.error("Cannot load zips", e);
     }
   };
   return { store, load };
