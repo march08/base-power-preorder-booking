@@ -33,7 +33,7 @@ export type PreorderAppConfig = {
   targetAvailableText: string;
   targetDisplayAddress: string;
   querySelectorClickToOpenForm: string;
-  googleSheetConfig: Pick<SheetDataConfig, "sheetId" | "sheetPage">;
+  googleSheetConfig: SheetDataConfig;
   hsFormSuccess: HubspotFormConfig;
   hsFormNewsletter: HubspotFormConfig;
   onAddressSelect?: (data: ParsedPlaceResult) => void;

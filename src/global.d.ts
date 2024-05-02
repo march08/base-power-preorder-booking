@@ -1,6 +1,6 @@
 /// <reference types="svelte" />
 
-import type { SheetZips } from "./location-input/zipData/fetchGoogleSheetsZipCodes";
+import type { SheetZips } from "./location-input/zipData/fetchZipCodes";
 
 declare global {
   interface Window {

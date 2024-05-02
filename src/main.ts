@@ -17,8 +17,8 @@ PreorderApp.initialize({
 
   // stripe
   googleSheetConfig: {
-    sheetId: "11gEG0LH5svkrjEjVDl63Cm3eFsmkFiR15kP2ODpVzqg",
-    sheetPage: "Deregulated Zip Codes",
+    zipsCsvUrl:
+      "https://bpc-web-static-files.s3.us-east-2.amazonaws.com/deregulated-zips.csv",
   },
 
   // hubspot

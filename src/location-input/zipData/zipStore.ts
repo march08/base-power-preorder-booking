@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 import type { SheetDataConfig, StoredZipData } from "./types";
-import { fetchZipCodes } from "./fetchGoogleSheetsZipCodes";
+import { fetchZipCodes } from "./fetchZipCodes";
 
 const initialState: StoredZipData = [];
 export const getZipStore = (sheetConfig: SheetDataConfig) => {
@@ -11,7 +11,7 @@ export const getZipStore = (sheetConfig: SheetDataConfig) => {
       const res = await fetchZipCodes(sheetConfig);
       store.set(res);
     } catch (e) {
-      console.log("Cannot load zips", e);
+      console.error("Cannot load zips", e);
     }
   };
   return { store, load };
