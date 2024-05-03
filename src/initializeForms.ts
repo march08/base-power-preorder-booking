@@ -64,7 +64,7 @@ export const initializeHubspotForms = ({
        * redirect to the payment page
        */
 
-      hsFormSuccess.onFormSubmitted?.(form, {
+      hsFormNewsletter.onFormSubmitted?.(form, {
         ...args,
         submissionValues: {
           ...args.submissionValues,
