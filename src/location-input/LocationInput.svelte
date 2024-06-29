@@ -52,10 +52,7 @@
     targetDisplayAddressEl.innerHTML = selectedAddress.formattedAddress;
     const foundZipItem: StoredZipDataItem | null =
       $zipStore.find((zipItem) => {
-        return (
-          zipItem.stateShort === selectedAddress.stateShort &&
-          zipItem.zip === selectedAddress.postalCode
-        );
+        return zipItem.zip === selectedAddress.postalCode;
       }) || null;
 
     if (foundZipItem) {
