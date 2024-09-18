@@ -18,6 +18,7 @@
 
   onMount(() => {
     loadGooglePlacesLibrary(apiKey, () => {
+      options["types"] = ["street_address", "premise", "subpremise", "point_of_interest"];
       const autocomplete = new google.maps.places.Autocomplete(inputField, {
         ...options,
       });

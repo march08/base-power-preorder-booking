@@ -36,11 +36,11 @@
 
   const handleSubmit = () => {
     if (!selectedAddress) {
-      inputErrorMessage = "Please select an address with ZIP code.";
+      inputErrorMessage = "Please enter a full address.";
       return;
     }
-    if (!selectedAddress.postalCode) {
-      inputErrorMessage = "Please select an address with ZIP code.";
+    if (!selectedAddress.postalCode || !selectedAddress.houseNumber || !selectedAddress.street) {
+      inputErrorMessage = "Please enter a full address.";
       return;
     }
 

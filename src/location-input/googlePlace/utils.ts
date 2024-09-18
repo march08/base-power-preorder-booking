@@ -3,14 +3,14 @@ const initAddressComponentsByType: {
 } = {};
 
 export const parsePlaceResult = (place: google.maps.places.PlaceResult) => {
+  console.log(place)
   const addressComponentsByType = (place.address_components || []).reduce(
     function (acc, data) {
       data.types.forEach(function (type) {
         acc[type] = data;
       });
       return acc;
-    },
-    initAddressComponentsByType
+    }, {}
   );
 
   const placeGet = (key: string, short = false) => {
