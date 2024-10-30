@@ -6,6 +6,7 @@ declare global {
   interface Window {
     preorderZipCodes: SheetZips;
     hbspt: any;
+    clarity: any;
     hsFormPreorder: HTMLFormElement;
     hsFormNewsletter: HTMLFormElement;
   }

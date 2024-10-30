@@ -194,7 +194,8 @@ export const setHiddenHubspotInputs = (
   zipConfig?: StoredZipDataItem | null
 ) => {
   setInputValue(form, "zip", parsedData.postalCode);
-  setInputValue(form, "state", "TX");
+  window.clarity("event", "stateShort: " + parsedData.stateShort);
+  setInputValue(form, "state", parsedData.stateShort);
   setInputValue(form, "country", parsedData.countryCode);
   setInputValue(form, "city", parsedData.city);
   setInputValue(form, "street_2", parsedData.street_2);
